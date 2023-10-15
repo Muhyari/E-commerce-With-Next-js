@@ -13,7 +13,7 @@ datasource db {
 model User {
   id            String        @id @default(cuid())
   name          String
-  email         String       @unique
+  email         String        @unique
   password      String
   emailVerified DateTime?
   image         String?
@@ -22,10 +22,10 @@ model User {
   updatedAt     DateTime      @updatedAt
   Address       Address[]
   Transaction   Transaction[]
- 
+
   @@map("users")
 }
- 
+
 model Address {
   id           String        @id @default(cuid())
   userId       String
@@ -39,10 +39,10 @@ model Address {
   updatedAt    DateTime?
   user         User          @relation(fields: [userId], references: [id])
   transactions Transaction[]
- 
+
   @@map("addresses")
 }
- 
+
 model Transaction {
   id                String    @id @default(cuid())
   transactionNumber String
@@ -58,10 +58,10 @@ model Transaction {
   user              User      @relation(fields: [userId], references: [id])
   address           Address   @relation(fields: [addressId], references: [id])
   items             Item[]
- 
+
   @@map("transactions")
 }
- 
+
 model Item {
   id            String      @id @default(cuid())
   productId     String
@@ -72,20 +72,21 @@ model Item {
   updatedAt     DateTime?
   product       Product     @relation(fields: [productId], references: [id])
   transaction   Transaction @relation(fields: [transactionId], references: [id])
- 
+
   @@map("items")
 }
- 
+
 model Category {
   id        String    @id @default(cuid())
   name      String    @unique
+  slug      String
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   products  Product[]
- 
+
   @@map("categories")
 }
- 
+
 model Product {
   id          String    @id @default(cuid())
   name        String
@@ -93,10 +94,12 @@ model Product {
   price       Float
   categoryId  String
   image       String
+  qty         String
+  slug        String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
   category    Category  @relation(fields: [categoryId], references: [id])
   Item        Item[]
- 
+
   @@map("products")
 }
